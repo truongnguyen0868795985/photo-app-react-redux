@@ -15,6 +15,7 @@ function AddEditPage(props) {
   const { photoId } = useParams();
   const isAddMode = !photoId;
 
+  console.log({isAddMode,photoId});
   const editedPhoto = useSelector((state) =>
     state.photos.find((x) => x.id === +photoId)
   );
@@ -27,7 +28,6 @@ function AddEditPage(props) {
       }
     : editedPhoto;
 
-  console.log("initialValues in add edit", initialValues);
   const handleSubmit = (values) => {
     // Add new photo
     if (isAddMode) {
@@ -41,7 +41,6 @@ function AddEditPage(props) {
               };
               const action = addPhoto(newPhoto);
               dispatch(action);
-              console.log("res: ", res);
             },
             (error) => {
               console.log("Can't store photo: ", error);
@@ -62,8 +61,6 @@ function AddEditPage(props) {
             .then((res) => {
               const action = updatePhoto(values);
               dispatch(action);
-              console.log("Update response: ", res);
-
             })
             .catch(function (error) {
               console.log("Can't store photo: ", error);

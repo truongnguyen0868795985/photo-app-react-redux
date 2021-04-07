@@ -41,11 +41,9 @@ function MainPage(props) {
     try {
       const deletePhoto = async () => {
         const params = { id: removePhotoId };
-        console.log(removePhotoId);
         await photoApi.delete(params).then((res) => {
           const action = removePhoto(removePhotoId);
           dispatch(action);
-          console.log('res: ',res);
         });
       };
 
