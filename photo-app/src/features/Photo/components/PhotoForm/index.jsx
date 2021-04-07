@@ -21,7 +21,6 @@ PhotoForm.defaultProps = {
 
 function PhotoForm(props) {
   const { initialValues, isAddMode } = props;
-
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("This field is required."),
 

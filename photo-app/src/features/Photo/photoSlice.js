@@ -1,102 +1,147 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialPhotos = [
+
+const photos = [
   {
-    id: 91176,
-    categoryId: 5,
-    photo: 'https://picsum.photos/id/532/300/300',
-    title: 'Enim laboris dolore consectetur et fugiat do amet eiusmod anim proident do culpa irure consectetur.'
+      "photo": "https://picsum.photos/id/237/300/300"
   },
   {
-    id: 82605,
-    categoryId: 1,
-    photo: 'https://picsum.photos/id/43/300/300',
-    title: 'Ad officia magna veniam sunt.'
+      "photo": "https://picsum.photos/id/530/300/300"
   },
   {
-    id: 74760,
-    categoryId: 3,
-    photo: 'https://picsum.photos/id/722/300/300',
-    title: 'Minim anim in sunt esse nisi sit magna consequat in sit laboris adipisicing.'
+      "photo": "https://picsum.photos/id/552/300/300"
   },
   {
-    id: 39588,
-    categoryId: 5,
-    photo: 'https://picsum.photos/id/294/300/300',
-    title: 'Deserunt in tempor est id consectetur cupidatat.'
+      "photo": "https://picsum.photos/id/76/300/300"
   },
   {
-    id: 72133,
-    categoryId: 4,
-    photo: 'https://picsum.photos/id/229/300/300',
-    title: 'Labore culpa velit sunt sit anim ad do veniam do proident sunt et nisi mollit.'
+      "photo": "https://picsum.photos/id/648/300/300"
   },
   {
-    id: 95333,
-    categoryId: 1,
-    photo: 'https://picsum.photos/id/862/300/300',
-    title: 'Fugiat fugiat voluptate tempor minim ipsum nisi culpa magna officia ea deserunt tempor.'
+      "photo": "https://picsum.photos/id/316/300/300"
   },
   {
-    id: 62419,
-    categoryId: 3,
-    photo: 'https://picsum.photos/id/515/300/300',
-    title: 'Excepteur nisi aliquip ex aliqua consectetur id laboris cillum elit dolor dolor anim sint.'
+      "photo": "https://picsum.photos/id/973/300/300"
   },
   {
-    id: 12569,
-    categoryId: 5,
-    photo: 'https://picsum.photos/id/730/300/300',
-    title: 'Occaecat exercitation Lorem cupidatat adipisicing elit duis consequat esse et tempor eu enim cupidatat.'
+      "photo": "https://picsum.photos/id/918/300/300"
   },
   {
-    id: 47434,
-    categoryId: 3,
-    photo: 'https://picsum.photos/id/287/300/300',
-    title: 'Veniam officia est nulla proident labore.'
+      "photo": "https://picsum.photos/id/919/300/300"
   },
   {
-    id: 52685,
-    categoryId: 3,
-    photo: 'https://picsum.photos/id/859/300/300',
-    title: 'Ut incididunt do magna culpa consectetur id deserunt et enim elit quis.'
+      "photo": "https://picsum.photos/id/545/300/300"
   },
   {
-    id: 69928,
-    categoryId: 5,
-    photo: 'https://picsum.photos/id/110/300/300',
-    title: 'Nisi velit fugiat voluptate fugiat magna officia qui fugiat ad non.'
+      "photo": "https://picsum.photos/id/507/300/300"
   },
   {
-    id: 86160,
-    categoryId: 5,
-    photo: 'https://picsum.photos/id/649/300/300',
-    title: 'Id ex enim non dolore reprehenderit eu ullamco.'
+      "photo": "https://picsum.photos/id/183/300/300"
   },
+  {
+      "photo": "https://picsum.photos/id/121/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/545/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/411/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/166/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/432/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/449/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/879/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/1042/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/607/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/766/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/495/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/612/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/460/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/315/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/45/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/360/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/251/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/294/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/693/300/300"
+  },
+  {
+      "photo": "https://picsum.photos/id/782/300/300"
+  }
 ];
 
+
+let initialPhotos = [];
+
 const photo = createSlice({
-  name: 'photos',
+  name: "photos",
   initialState: initialPhotos,
   reducers: {
+    initPhotos : (state, action) => {
+      return state = action.payload;
+    },
     addPhoto: (state, action) => {
-      state.push(action.payload)
+      state.push(action.payload);
     },
     removePhoto: (state, action) => {
       const removeId = action.payload;
-      return state = state.filter(photo => photo.id !== removeId)
+      return (state = state.filter((photo) => photo.id !== removeId));
     },
     updatePhoto: (state, action) => {
       const newPhoto = action.payload;
-      const photoIndex = state.findIndex(photo => photo.id === newPhoto.id);
+      const photoIndex = state.findIndex((photo) => photo.id === newPhoto.id);
 
-      if(photoIndex >= 0){
+      if (photoIndex >= 0) {
         state[photoIndex] = newPhoto;
       }
-    }
-  }
-})
+    },
+  },
+});
 
 const { reducer, actions } = photo;
-export const {addPhoto, removePhoto, updatePhoto} = actions;
+export const { initPhotos, addPhoto, removePhoto, updatePhoto } = actions;
 export default reducer;
+
+
+// The function below is called a thunk and allows us to perform async logic. It
+// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
+// will call the thunk with the `dispatch` function as the first argument. Async
+// code can then be executed and other actions can be dispatched
+// export const incrementAsync = amount => dispatch => {
+//   setTimeout(() => {
+//     dispatch(incrementByAmount(amount));
+//   }, 1000);
+// };

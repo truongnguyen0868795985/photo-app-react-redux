@@ -1,12 +1,12 @@
+import photoApi from "api/photoApi";
 import Banner from "components/Banner";
 import Images from "constants/images";
-import React from "react";
+import PhotoList from "features/Photo/components/PhotoList";
+import { initPhotos, removePhoto } from "features/Photo/photoSlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { Container } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
-import PhotoList from "features/Photo/components/PhotoList";
-
-import { removePhoto } from 'features/Photo/photoSlice'
 
 MainPage.propTypes = {};
 
@@ -15,20 +15,45 @@ function MainPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  console.log("List of photos", photos);
+  useEffect(() => {
+    async function getPhotos() {
+      const photos = await photoApi.getAll();
+
+      const action = initPhotos(photos);
+      dispatch(action);
+    }
+
+    try {
+      getPhotos();
+    } catch (error) {
+      console.log("Can't fetch photos data!", error);
+    }
+  }, []);
 
   const handlePhotoEditClick = (photo) => {
-    console.log('Photo id edit:', photo);
     const editPhotoUrl = `/photos/${photo.id}`;
     history.push(editPhotoUrl);
-  }
+  };
 
   const handlePhotoRemoveClick = (photo) => {
-    console.log('Photo id remove:', photo);
     const removePhotoId = photo.id;
-    const action = removePhoto(removePhotoId);
-    dispatch(action);
-  }
+
+    try {
+      const deletePhoto = async () => {
+        const params = { id: removePhotoId };
+        console.log(removePhotoId);
+        await photoApi.delete(params).then((res) => {
+          const action = removePhoto(removePhotoId);
+          dispatch(action);
+          console.log('res: ',res);
+        });
+      };
+
+      deletePhoto();
+    } catch (error) {
+      console.log("Can't delete photo", error);
+    }
+  };
 
   return (
     <div className="photo-main">

@@ -1,11 +1,11 @@
+import photoApi from "api/photoApi";
 import Banner from "components/Banner";
 import PhotoForm from "features/Photo/components/PhotoForm";
 import { addPhoto, updatePhoto } from "features/Photo/photoSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import "./styles.scss";
-import { useHistory } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 AddEditPage.propTypes = {};
 
@@ -27,27 +27,56 @@ function AddEditPage(props) {
       }
     : editedPhoto;
 
-  const ramdomNumber = async (startNumber, endNumber) => {
-    const random = await random();
-    return Math.trunc(random * (endNumber - startNumber));
-  };
+  console.log("initialValues in add edit", initialValues);
   const handleSubmit = (values) => {
-    let action = null;
-    setTimeout(() => {
-      if (isAddMode) {
-        const newPhoto = {
-          ...values,
-          id: ramdomNumber(10000, 99999),
+    // Add new photo
+    if (isAddMode) {
+      try {
+        const storePhoto = async () => {
+          await photoApi.store(values).then(
+            (res) => {
+              const newPhoto = {
+                ...values,
+                id: res,
+              };
+              const action = addPhoto(newPhoto);
+              dispatch(action);
+              console.log("res: ", res);
+            },
+            (error) => {
+              console.log("Can't store photo: ", error);
+            }
+          );
         };
 
-        action = addPhoto(newPhoto);
-      } else {
-        action = updatePhoto(values);
+        storePhoto();
+      } catch (error) {
+        console.log("Can't store photo trycatch: ", error);
       }
+    } else {
+      // Edit photo
+      try {
+        const editPhoto = async () => {
+          await photoApi
+            .update(values)
+            .then((res) => {
+              const action = updatePhoto(values);
+              dispatch(action);
+              console.log("Update response: ", res);
 
-      dispatch(action);
-      history.push("/photos");
-    }, 2000);
+            })
+            .catch(function (error) {
+              console.log("Can't store photo: ", error);
+            });
+        };
+
+        editPhoto();
+      } catch (error) {
+        console.log("Can't store photo trycatch: ", error);
+      }
+    }
+
+    history.push("/photos");
   };
 
   return (
@@ -55,7 +84,11 @@ function AddEditPage(props) {
       <Banner title="Pick your amazing photo 😎" />
 
       <div className="photo-edit__form">
-        <PhotoForm initialValues={initialValues} isAddMode={isAddMode} onSubmit={handleSubmit} />
+        <PhotoForm
+          initialValues={initialValues}
+          isAddMode={isAddMode}
+          onSubmit={handleSubmit}
+        />
       </div>
     </div>
   );
