@@ -37,13 +37,13 @@ function PhotoForm(props) {
 
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={props.onSubmit}
     >
       {(formikProps) => {
-        // const { value, errors, touched, isSubmitting } = formikProps;
-        const { isSubmitting } = formikProps;
+        const { value, errors, touched, isSubmitting } = formikProps;
 
         return (
           <Form>
@@ -71,7 +71,7 @@ function PhotoForm(props) {
             />
 
             <FormGroup>
-              <Button type="submit" color={isAddMode ? 'primary' : 'success '}>
+              <Button type="submit" color={isAddMode ? "primary" : "success "}>
                 {isSubmitting && <Spinner size="sm" />}
                 {isAddMode ? "Add to album" : "Update your album 😊"}
               </Button>

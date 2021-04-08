@@ -28,7 +28,7 @@ function MainPage(props) {
     } catch (error) {
       console.log("Can't fetch photos data!", error);
     }
-  }, []);
+  }, [dispatch]);
 
   const handlePhotoEditClick = (photo) => {
     const editPhotoUrl = `/photos/${photo.id}`;

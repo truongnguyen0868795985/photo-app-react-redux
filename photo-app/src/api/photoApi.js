@@ -6,6 +6,10 @@ class PhotoApi {
     const url = "/photos";
     return axiosClient.get(url, { params });
   };
+  show = (params) => {
+    const url = `/photos/${params.id}`;
+    return axiosClient.get(url, {  });
+  }
   delete = (params) => {
     const url = `/photos/${params.id}`;
     return axiosClient.delete(url, {  });
@@ -14,7 +18,7 @@ class PhotoApi {
     const url = `/photos`;
     return axiosClient.post(url, {params})
   };
-  update = (params,id) => {
+  update = (params) => {
     const url = `/photos/${params.id}`;
     return axiosClient.put(url,{params})
   }

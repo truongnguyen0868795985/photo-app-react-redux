@@ -2,31 +2,45 @@ import photoApi from "api/photoApi";
 import Banner from "components/Banner";
 import PhotoForm from "features/Photo/components/PhotoForm";
 import { addPhoto, updatePhoto } from "features/Photo/photoSlice";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import "./styles.scss";
 
 AddEditPage.propTypes = {};
 
 function AddEditPage(props) {
+  const [photo, setPhoto] = useState({
+    title: "hi",
+    categoryId: null,
+    photo: "",
+  });
   const dispatch = useDispatch();
   const history = useHistory();
   const { photoId } = useParams();
   const isAddMode = !photoId;
 
-  console.log({isAddMode,photoId});
-  const editedPhoto = useSelector((state) =>
-    state.photos.find((x) => x.id === +photoId)
-  );
+  // Get photo if Edit mode
+  useEffect(() => {
+    if (!isAddMode) {
+      try {
+        const getPhoto = async () => {
+          await photoApi.show({ id: photoId }).then((res) => {
 
-  const initialValues = isAddMode
-    ? {
-        title: "",
-        categoryId: null,
-        photo: "",
+            setPhoto({
+              id: res.id,
+              title: res.title,
+              categoryId: res.categoryId,
+              photo: res.photo
+            })            
+          });
+        };
+        getPhoto();
+      } catch (error) {
+        console.log("Can't get photo data", error);
       }
-    : editedPhoto;
+    }
+  }, []);
 
   const handleSubmit = (values) => {
     // Add new photo
@@ -82,7 +96,7 @@ function AddEditPage(props) {
 
       <div className="photo-edit__form">
         <PhotoForm
-          initialValues={initialValues}
+          initialValues={photo}
           isAddMode={isAddMode}
           onSubmit={handleSubmit}
         />
